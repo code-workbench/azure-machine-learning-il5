@@ -34,6 +34,11 @@ var vmName = '${abbrs.computeVirtualMachines}jumpbox-${resourceToken}'
 var nicName = '${abbrs.networkNetworkInterfaces}jumpbox-${resourceToken}'
 var pipName = '${abbrs.networkPublicIPAddresses}jumpbox-${resourceToken}'
 
+// Windows computer name must be 15 characters or less and contain only letters, numbers, and hyphens
+// Cannot be entirely numeric or contain special characters
+var computerNameBase = 'jb${take(replace(replace(environmentName, '-', ''), '_', ''), 8)}${take(resourceToken, 4)}'
+var computerName = take(computerNameBase, 15)
+
 // ========================================
 // Public IP for Jumpbox
 // ========================================
@@ -99,7 +104,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2024-07-01' = {
       vmSize: vmSize
     }
     osProfile: {
-      computerName: vmName
+      computerName: computerName
       adminUsername: adminUsername
       adminPassword: adminPassword
       windowsConfiguration: {
@@ -152,5 +157,8 @@ output publicIpAddress string = pip.properties.ipAddress
 @description('The FQDN of the jumpbox')
 output fqdn string = pip.properties.dnsSettings.fqdn
 
-@description('The admin username for the jumpbox')
+@description('The computer name of the virtual machine')
+output computerName string = computerName
+
+@description('The admin username for the virtual machine')
 output adminUsername string = adminUsername

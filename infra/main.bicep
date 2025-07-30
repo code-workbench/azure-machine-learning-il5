@@ -128,6 +128,7 @@ output appInsightsName string = storage.outputs.appInsightsName
 @description('Connection information for accessing the jumpbox')
 output connectionInfo object = {
   jumpboxFqdn: jumpbox.outputs.fqdn
+  computerName: jumpbox.outputs.computerName
   adminUsername: adminUsername
   rdpPort: 3389
   instructions: 'Connect via RDP using the FQDN and credentials provided'

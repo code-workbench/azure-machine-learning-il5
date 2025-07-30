@@ -130,7 +130,9 @@ Access your machine learning workspace:
 │       └── azure-machine-learning.bicep  # ML workspace and private endpoints
 ├── scripts/
 │   ├── deploy.sh                     # Main deployment script
-│   └── examples.sh                   # Usage examples
+│   ├── examples.sh                   # Usage examples
+│   ├── cleanup.sh                    # Resource group cleanup script
+│   └── cleanup-examples.sh           # Cleanup usage examples
 └── README.md                         # This file
 ```
 
@@ -209,7 +211,37 @@ View all available options:
 
 View usage examples:
 ```bash
+View usage examples:
+```bash
 ./scripts/examples.sh
+```
+
+## Cleanup
+
+To completely remove all deployed resources:
+
+### Safe Cleanup (Recommended)
+```bash
+# Interactive cleanup with confirmation
+./scripts/cleanup.sh --resource-group rg-ml-dev
+```
+
+### Force Cleanup (Use with Caution)
+```bash
+# Skip confirmations - use only for automation
+./scripts/cleanup.sh -g rg-ml-dev --force
+```
+
+### Cleanup Examples
+```bash
+# View cleanup usage examples
+./scripts/cleanup-examples.sh
+
+# Get cleanup help
+./scripts/cleanup.sh --help
+```
+
+## Support
 ```
 
 ## Next Steps

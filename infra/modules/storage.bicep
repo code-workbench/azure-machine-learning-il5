@@ -10,6 +10,8 @@ param location string = resourceGroup().location
 @description('Resource token for unique naming')
 param resourceToken string
 
+param additionalRandomSuffix string = take(uniqueString(resourceGroup().id, environmentName, resourceToken, utcNow()), 4)
+
 // ========================================
 // Variables
 // ========================================
@@ -17,7 +19,8 @@ param resourceToken string
 // Ensure minimum length requirements for resource names
 // Storage account name must be 3-24 characters, alphanumeric only
 var storageAccountName = take('stml${replace(environmentName, '-', '')}${resourceToken}', 24)
-var keyVaultName = take('kv-${environmentName}-${resourceToken}', 24)
+// Key Vault name with additional randomness to prevent soft-delete collisions
+var keyVaultName = take('kv-${take(replace(environmentName, '-', ''), 8)}-${resourceToken}-${additionalRandomSuffix}', 24)
 var appInsightsName = 'appi-${environmentName}-${resourceToken}'
 var logAnalyticsName = 'log-${environmentName}-${resourceToken}'
 

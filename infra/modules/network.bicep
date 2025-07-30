@@ -51,17 +51,45 @@ resource nsgJumpbox 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
         }
       }
       {
-        name: 'AllowHTTPS'
+        name: 'AllowAzureCloud'
         properties: {
-          protocol: 'Tcp'
+          protocol: '*'
           sourcePortRange: '*'
-          destinationPortRange: '443'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: 'VirtualNetwork'
+          destinationAddressPrefix: 'AzureCloud'
           access: 'Allow'
           priority: 1100
           direction: 'Outbound'
-          description: 'Allow HTTPS outbound'
+          description: 'Allow outbound to Azure services'
+        }
+      }
+      {
+        name: 'AllowVnetOutbound'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: 'VirtualNetwork'
+          destinationAddressPrefix: 'VirtualNetwork'
+          access: 'Allow'
+          priority: 1200
+          direction: 'Outbound'
+          description: 'Allow communication within VNet'
+        }
+      }
+      {
+        name: 'DenyInternetOutbound'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: 'Internet'
+          access: 'Deny'
+          priority: 4000
+          direction: 'Outbound'
+          description: 'Block all outbound internet access'
         }
       }
     ]
